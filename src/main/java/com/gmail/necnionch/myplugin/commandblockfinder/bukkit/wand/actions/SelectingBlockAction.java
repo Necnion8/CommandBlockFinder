@@ -4,21 +4,19 @@ import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.finder.CommandBloc
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.finder.FindResult;
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.util.CommandBlockType;
 import net.md_5.bungee.api.ChatColor;
-import net.md_5.bungee.api.chat.*;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
+import net.md_5.bungee.api.chat.HoverEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.gmail.necnionch.myplugin.commandblockfinder.bukkit.CommandBlockFinderPlugin.TRANSPARENT_TYPES;
 
 public class SelectingBlockAction implements WandAction {
 
@@ -61,7 +59,7 @@ public class SelectingBlockAction implements WandAction {
             tpWorld = "overworld";
 
         String teleportCommand = String.format("/execute in %s run tp %d %d %d", tpWorld, location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        player.sendMessage("");
+        player.sendMessage(ChatColor.DARK_AQUA + "-----------------------------------------------------");
 
         if (commandBlock != null) {
             org.bukkit.block.data.type.CommandBlock cbData = (org.bukkit.block.data.type.CommandBlock) commandBlock.getBlockData();
@@ -79,7 +77,9 @@ public class SelectingBlockAction implements WandAction {
                     .append(" | ").color(ChatColor.WHITE)
                     .create());
             player.spigot().sendMessage(new ComponentBuilder("")
-                    .append("コマンド(#" + (index + 1) + "): ").color(ChatColor.WHITE)
+                    .append("コマンド(").color(ChatColor.WHITE)
+                    .append("#" + (index + 1)).color(ChatColor.AQUA)
+                    .append("): ").color(ChatColor.WHITE)
                     .append(commandBlock.getCommand()).color(ChatColor.YELLOW)
                     .event(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/setcommandblock"))
                     .event(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new ComponentBuilder("クリックでコマンドを変更").create()))
@@ -95,7 +95,9 @@ public class SelectingBlockAction implements WandAction {
                     .append("モード: ").color(ChatColor.WHITE)
                     .create());
             player.spigot().sendMessage(new ComponentBuilder("")
-                    .append("コマンド(#" + (index + 1) + "): ").color(ChatColor.WHITE)
+                    .append("コマンド(").color(ChatColor.WHITE)
+                    .append("#" + (index + 1)).color(ChatColor.AQUA)
+                    .append("): ").color(ChatColor.WHITE)
                     .create());
         }
     }
