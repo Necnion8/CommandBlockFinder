@@ -7,11 +7,11 @@ import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.finder.FindResult;
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.PlayerWandManager;
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.WandInstance;
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.actions.SelectingBlockAction;
-import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.actions.WandAction;
 import com.google.common.collect.Lists;
-import org.bukkit.*;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -49,7 +49,9 @@ public class FindCommand implements CommandExecutor, TabExecutor {
         if (!result.getResults().isEmpty()) {
             player.sendMessage(ChatColor.AQUA + "コマンドブロックが " + result.getResults().size() + "件 見つかりました");
             result.getResults().stream()
-                    .min(Comparator.comparingLong(cb -> (long) cb.getLocation().distance(player.getLocation())))
+                    .min(Comparator.comparingLong(cb -> (player.getWorld().equals(cb.getWorld()))
+                            ? (long) cb.getLocation().distance(player.getLocation())
+                            : Long.MAX_VALUE))
                     .ifPresent(cb -> {
                         int index = result.getResults().indexOf(cb);
                         WandInstance wand = wandManager.getWandInstance(player);
