@@ -1,8 +1,6 @@
 package com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand;
 
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.CommandBlockFinderPlugin;
-import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.actions.BlockEditAction;
-import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.actions.SelectingBlockAction;
 import com.gmail.necnionch.myplugin.commandblockfinder.bukkit.wand.actions.WandAction;
 import com.google.common.collect.Maps;
 import net.md_5.bungee.api.ChatColor;
@@ -18,14 +16,16 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.ItemSpawnEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -97,6 +97,11 @@ public class PlayerWandManager extends BukkitRunnable implements Listener {
         if (plugin.isWandItemStack(player.getInventory().getItemInMainHand())) {
             if (player.isSneaking()) {
                 event.setCancelled(true);
+
+                if (event.getPreviousSlot() == event.getNewSlot()) {
+                    // キャンセル後にカーソルが戻ることでイベントが発火するための対応
+                    return;
+                }
 
                 if (wands.containsKey(player)) {
                     WandAction action = wands.get(player).getCurrent();
