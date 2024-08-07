@@ -1,0 +1,17 @@
+name: CommandBlockFinder
+version: '${version}'
+main: com.gmail.necnionch.myplugin.commandblockfinder.bukkit.CommandBlockFinderPlugin
+api-version: 1.14
+authors: [ Necnion8 ]
+
+commands:
+  wandcommandblock:
+    permission: commandblockfinder.admin
+  findcommandblock:
+    permission: commandblockfinder.admin
+  setcommandblock:
+    permission: commandblockfinder.admin
+
+permissions:
+  commandblockfinder.admin:
+    default: op
